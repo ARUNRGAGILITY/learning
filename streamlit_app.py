@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import re
 
 def parse_markdown_content(markdown_content):
     """
@@ -122,8 +123,7 @@ def main():
 
                 if selected_md_file:
                     md_file_path = os.path.join(module_path, selected_md_file)
-                    md_content = get_md_content(md_file_path)
-                    st.markdown(md_content)
+                    display_filtered_content(md_file_path)
 
 if __name__ == "__main__":
     main()
