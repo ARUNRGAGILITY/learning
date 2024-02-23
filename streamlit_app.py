@@ -1,25 +1,25 @@
 import streamlit as st
 import os
 import re
+
+
 def display_breadcrumbs(selected_topic, selected_category, selected_module, selected_md_file):
-    # Base URL for your app (modify as needed for external links)
-    base_url = "#"  # Using "#" for internal links; replace with actual URL if needed
-
-    # Initialize the breadcrumb
-    breadcrumbs_html = '<span style="font-size: 0.8rem;">Home</span>'
-
-    # Dynamically build the breadcrumb path
+    # Initialize the breadcrumb with the home link, using a span to control the font size
+    breadcrumbs = '<span style="font-size: 0.8rem;">Home</span>'
+    
+    # Dynamically add to the breadcrumb based on what the user has selected
     if selected_topic:
-        breadcrumbs_html += f' > <a href="{base_url}" style="font-size: 0.8rem;">{selected_topic}</a>'
+        breadcrumbs += f' > <span style="font-size: 0.8rem;">{selected_topic}</span>'
     if selected_category:
-        breadcrumbs_html += f' > <a href="{base_url}" style="font-size: 0.8rem;">{selected_category}</a>'
+        breadcrumbs += f' > <span style="font-size: 0.8rem;">{selected_category}</span>'
     if selected_module:
-        breadcrumbs_html += f' > <a href="{base_url}" style="font-size: 0.8rem;">{selected_module}</a>'
+        breadcrumbs += f' > <span style="font-size: 0.8rem;">{selected_module}</span>'
     if selected_md_file:
-        breadcrumbs_html += f' > <a href="{base_url}" style="font-size: 0.8rem;">{selected_md_file}</a>'
+        breadcrumbs += f' > <span style="font-size: 0.8rem;">{selected_md_file}</span>'
 
     # Display the breadcrumbs at the top of the main content area
-    st.markdown(breadcrumbs_html, unsafe_allow_html=True)
+    st.markdown(breadcrumbs, unsafe_allow_html=True)
+
 
 
 
