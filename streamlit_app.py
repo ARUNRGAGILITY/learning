@@ -21,7 +21,7 @@ def parse_markdown_content(markdown_content):
     # Join all code blocks with a newline
     code_only = '\n'.join(code_blocks)
     # Join all concept blocks with a newline
-    concepts_only = '\n'.join(concept_blocks)
+    concepts_only = '\n\n'.join(concept_blocks)
     
     return {'code': code_only, 'concepts': concepts_only, 'all': markdown_content}
 
