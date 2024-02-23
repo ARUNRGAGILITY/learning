@@ -116,7 +116,7 @@ def main():
     if selected_topic:
         topic_path = topics[selected_topic]
         categories = list_categories(topic_path)
-        selected_category = st.sidebar.selectbox("Select a Category", options=categories)
+        selected_category = st.sidebar.selectbox("Select a Level", options=categories)
 
         if selected_category:
             category_path = os.path.join(topic_path, selected_category)
@@ -126,7 +126,7 @@ def main():
             if selected_module:
                 module_path = os.path.join(category_path, selected_module)
                 md_files = list_md_files(module_path)
-                selected_md_file = st.sidebar.selectbox("Select a Sub-Topic", options=md_files)
+                selected_md_file = st.sidebar.selectbox("Select a Lesson", options=md_files)
 
                 if selected_md_file:
                     md_file_path = os.path.join(module_path, selected_md_file)
