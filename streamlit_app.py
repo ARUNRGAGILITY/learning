@@ -2,6 +2,24 @@ import streamlit as st
 import os
 import re
 
+def display_breadcrumbs(selected_topic, selected_category, selected_module, selected_md_file):
+    # Initialize the breadcrumb with the home link
+    breadcrumbs = "Home"
+    
+    # Dynamically add to the breadcrumb based on what the user has selected
+    if selected_topic:
+        breadcrumbs += f" > {selected_topic}"
+    if selected_category:
+        breadcrumbs += f" > {selected_category}"
+    if selected_module:
+        breadcrumbs += f" > {selected_module}"
+    if selected_md_file:
+        breadcrumbs += f" > {selected_md_file}"
+
+    # Display the breadcrumbs at the top of the main content area
+    st.markdown(f"#### {breadcrumbs}")
+
+
 def parse_markdown_content(markdown_content):
     """
     Parses the Markdown content to separate code, concepts, and other content.
@@ -103,34 +121,40 @@ def get_md_content(md_file_path):
     with open(md_file_path, 'r') as file:
         return file.read()
 
-# Main Streamlit app
 def main():
-    st.title("Welcome to Learning Topics")
+    st.sidebar.title("Learning Topics")
 
-    # Assuming a base path for demonstration; replace this with your actual path or GitHub URL structure
-    base_path = "Learning"
+    base_path = "Learning"  # Assuming a base path for demonstration
     
     topics = list_topics(base_path)
-    selected_topic = st.sidebar.selectbox("Select a Topic", options=list(topics.keys()))
+    selected_topic = st.sidebar.selectbox("Select a Topic", options=["Select a Topic"] + list(topics.keys()))
+    
+    selected_category = None
+    selected_module = None
+    selected_md_file = None
 
-    if selected_topic:
+    if selected_topic != "Select a Topic":
         topic_path = topics[selected_topic]
         categories = list_categories(topic_path)
-        selected_category = st.sidebar.selectbox("Select a Level", options=categories)
+        selected_category = st.sidebar.selectbox("Select a Category", options=["Select a Category"] + categories)
 
-        if selected_category:
+        if selected_category != "Select a Category":
             category_path = os.path.join(topic_path, selected_category)
             modules = list_modules(category_path)
-            selected_module = st.sidebar.selectbox("Select a Module", options=modules)
+            selected_module = st.sidebar.selectbox("Select a Module", options=["Select a Module"] + modules)
 
-            if selected_module:
+            if selected_module != "Select a Module":
                 module_path = os.path.join(category_path, selected_module)
                 md_files = list_md_files(module_path)
-                selected_md_file = st.sidebar.selectbox("Select a Lesson", options=md_files)
+                selected_md_file = st.sidebar.selectbox("Select a Sub-Topic", options=["Select a Sub-Topic"] + md_files)
 
-                if selected_md_file:
-                    md_file_path = os.path.join(module_path, selected_md_file)
-                    display_filtered_content(md_file_path)
+    # Display breadcrumbs
+    display_breadcrumbs(selected_topic, selected_category, selected_module, selected_md_file)
+
+    # Now display the content based on the selected_md_file as previously defined
+    if selected_md_file and selected_md_file != "Select a Sub-Topic":
+        md_file_path = os.path.join(module_path, selected_md_file)
+        display_filtered_content(md_file_path)
 
 if __name__ == "__main__":
     main()
