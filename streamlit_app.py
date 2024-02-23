@@ -13,8 +13,8 @@ def parse_markdown_content(markdown_content):
     - dict, containing separated 'code', 'concepts', and 'all' content.
     """
     code_blocks = re.findall(r'```.*?```', markdown_content, re.DOTALL)
-    concept_blocks = re.findall(r'<!--concept-->(.*?)\n', markdown_content, re.DOTALL)
-
+    concept_blocks = re.findall(r'<!--concept-->\s*(.*?)\s*<!--end-->', markdown_content, re.DOTALL)
+    
     # Code only: Join all code blocks
     code_only = '\n'.join(code_blocks)
     # Concepts only: Join all concept blocks (you might need to adjust this regex based on your actual markers)
