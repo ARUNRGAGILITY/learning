@@ -1,6 +1,5 @@
 import streamlit as st
 import os
-import markdown
 
 # Mock function to list topics and their paths
 def list_topics(base_path):
@@ -26,13 +25,13 @@ def get_md_content(md_file_path):
     with open(md_file_path, 'r') as file:
         return file.read()
 
-# Assuming a base path for demonstration; replace this with your actual path or GitHub URL structure
-base_path = "Learning"
-
 # Main Streamlit app
 def main():
     st.title("Welcome to Learning Topics")
 
+    # Assuming a base path for demonstration; replace this with your actual path or GitHub URL structure
+    base_path = "Learning"
+    
     topics = list_topics(base_path)
     selected_topic = st.sidebar.selectbox("Select a Topic", options=list(topics.keys()))
 
@@ -54,8 +53,7 @@ def main():
                 if selected_md_file:
                     md_file_path = os.path.join(module_path, selected_md_file)
                     md_content = get_md_content(md_file_path)
-                    md_html = markdown.markdown(md_content)
-                    st.markdown(md_html, unsafe_allow_html=True)
+                    st.markdown(md_content)
 
 if __name__ == "__main__":
     main()
