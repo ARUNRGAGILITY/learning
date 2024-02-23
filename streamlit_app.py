@@ -38,9 +38,15 @@ def display_filtered_content(selected_file_path):
         
         parsed_content = parse_markdown_content(content)
         
-        # Display options for content filtering
-        display_option = st.radio("Display:", ['All Content', 'Code Only', 'Concepts Only'], index=0)
-        
+        # Custom CSS to change the radio buttons font size and display them horizontally
+        st.write('<style>div.row-widget.stRadio > div{flex-direction:row;} label{font-size: 0.8rem;}</style>', unsafe_allow_html=True)
+
+        # Place the radio button on the top right using columns
+        col1, col2 = st.columns([3, 1])  # Adjust the ratio as needed to move the radio to the right
+
+        with col2:  # This column will contain the radio buttons
+            display_option = st.radio("Display:", ['All Content', 'Code Only', 'Concepts Only'], horizontal=True, key="display_option")
+
         # Filter content based on the selected option
         if display_option == 'Code Only':
             st.markdown(parsed_content['code'], unsafe_allow_html=True)
