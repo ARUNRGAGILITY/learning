@@ -1,0 +1,320 @@
+# Python Stack Introduction
+
+We will see what is a stack and its use case
+
+### What is a Stack?
+A stack is a linear data structure that stores items in a Last-In/First-Out (LIFO) or First-In/Last-Out (FILO) manner. In simple terms, the last item you put in (push) is the first item to come out (pop). Imagine a stack of plates; you can only take the top plate off or put a new plate on top.
+
+### Key Operations
+1. **Push**: Add an item to the top of the stack.
+2. **Pop**: Remove and return the top item from the stack.
+3. **Peek**: Return the top item without removing it.
+4. **IsEmpty**: Check if the stack is empty.
+
+### Why Use a Stack?
+1. **Ordering**: Stacks are used when the order of operations or objects is crucial, like reversing items or parsing expressions (e.g., "undo" functionality in software).
+2. **Efficiency**: O(1) complexity for adding/removing items, making them efficient for certain operations.
+3. **Control of Access**: Restricts access to the most recent element only, which is useful in certain scenarios.
+
+### Use Case Scenarios
+1. **Undo Mechanism in Editors**: Stacks are used to track the history of operations in text editors, graphic design software, etc. Each action is "pushed" onto the stack. When you hit "undo," the last action is "popped" off, reverting the last change.
+   
+2. **Web Browser Back Button**: The pages you visit are pushed onto a stack. When you press the back button, the current page is popped off the stack, taking you to the previous page.
+
+3. **Function Call Stack in Programming**: When a function (Function B) is called from another function (Function A), Function A is paused, and its state is pushed onto a stack. Function B runs and finishes. Then, Function A's state is popped off the stack, and it resumes where it left off.
+
+4. **Checking Balanced Parentheses in Expressions**: Stacks can be used to check for balanced parentheses in expressions, a common task in syntax parsing. Every time an opening parenthesis is encountered, it's pushed onto the stack, and when a closing parenthesis is encountered, the stack is popped. If at the end, the stack is empty, the parentheses are balanced.
+
+5. **Depth-First Search (DFS) in Graphs and Trees**: In DFS, a stack can be used to remember nodes that are yet to be explored. As you travel down a path, nodes are pushed onto the stack and then popped as you backtrack.
+
+6. **Solving Puzzles and Games**: Stacks can be used to backtrack in games or puzzles like mazes or the Tower of Hanoi, where you might need to reverse a series of moves.
+
+In all these cases, the stack's LIFO principle is crucial. It provides a way to remember and navigate back through previous states or actions, whether it's navigating web pages, backtracking in a maze, or reversing the last set of operations in a software application.
+
+# Python Stack
+
+Here are four examples of Python stacks. A stack is a fundamental data structure that follows the Last In First Out (LIFO) principle, meaning the last element added to the stack will be the first one to be removed. This can be implemented in Python in various ways, including using lists, collections.deque, class-based implementation, and using queue.LifoQueue. I'll provide examples for each.
+
+### Example 1: Using List
+
+A simple way to implement a stack in Python is by using a list. 
+
+```python
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def is_empty(self):
+        return self.items == []
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        return self.items.pop()
+
+    def peek(self):
+        return self.items[-1]
+
+    def size(self):
+        return len(self.items)
+
+# Example usage
+stack = Stack()
+stack.push('a')
+stack.push('b')
+print(stack.pop())  # b
+print(stack.peek())  # a
+```
+
+### Example 2: Using collections.deque
+
+`collections.deque` is a more efficient way to implement a stack, especially for larger datasets, because it has O(1) complexity for append and pop operations.
+
+```python
+from collections import deque
+
+class Stack:
+    def __init__(self):
+        self.items = deque()
+
+    def is_empty(self):
+        return not self.items
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        return self.items.pop()
+
+    def peek(self):
+        return self.items[-1]
+
+    def size(self):
+        return len(self.items)
+
+# Example usage
+stack = Stack()
+stack.push('a')
+stack.push('b')
+print(stack.pop())  # b
+print(stack.peek())  # a
+```
+
+### Example 3: Class-based Implementation
+
+This example shows a stack implemented as a class with nodes.
+
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class Stack:
+    def __init__(self):
+        self.top = None
+
+    def is_empty(self):
+        return self.top is None
+
+    def push(self, data):
+        new_node = Node(data)
+        new_node.next = self.top
+        self.top = new_node
+
+    def pop(self):
+        if self.is_empty():
+            return None
+        data = self.top.data
+        self.top = self.top.next
+        return data
+
+    def peek(self):
+        if self.is_empty():
+            return None
+        return self.top.data
+
+# Example usage
+stack = Stack()
+stack.push('a')
+stack.push('b')
+print(stack.pop())  # b
+print(stack.peek())  # a
+```
+
+### Example 4: Using queue.LifoQueue
+
+The `queue.LifoQueue` class provides a stack implementation as well. It’s thread-safe and can be used in multi-threaded environments.
+
+```python
+from queue import LifoQueue
+
+# Example usage
+stack = LifoQueue()
+stack.put('a')
+stack.put('b')
+print(stack.get())  # b
+print(stack.get())  # a
+```
+
+Each of these examples demonstrates a different way to implement a stack in Python. You can choose the one that best fits your needs based on factors like simplicity, performance, and thread safety.
+
+
+# Stack types
+Stacks can be implemented in various ways, each with its unique characteristics and applications. I'll provide examples of different types of stacks:
+
+### 1. **Fixed-Size Array Stack**
+   - Implemented using a fixed-size array.
+   - Suitable for scenarios where the maximum size of the stack is known in advance.
+
+```python
+class FixedSizeArrayStack:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.stack = [None] * capacity
+        self.top = -1
+
+    def is_empty(self):
+        return self.top == -1
+
+    def push(self, item):
+        if self.top < self.capacity - 1:
+            self.top += 1
+            self.stack[self.top] = item
+        else:
+            raise Exception("Stack Overflow")
+
+    def pop(self):
+        if self.is_empty():
+            raise Exception("Stack Underflow")
+        item = self.stack[self.top]
+        self.top -= 1
+        return item
+
+    def peek(self):
+        if self.is_empty():
+            raise Exception("Stack Underflow")
+        return self.stack[self.top]
+
+# Example usage
+stack = FixedSizeArrayStack(3)
+stack.push(1)
+stack.push(2)
+print(stack.pop())  # 2
+print(stack.peek())  # 1
+```
+
+### 2. **Dynamic Array Stack**
+   - Similar to the fixed-size array stack, but it can dynamically resize itself.
+   - Useful when the maximum size of the stack is not known.
+
+```python
+class DynamicArrayStack:
+    def __init__(self):
+        self.stack = []
+
+    def is_empty(self):
+        return len(self.stack) == 0
+
+    def push(self, item):
+        self.stack.append(item)
+
+    def pop(self):
+        if self.is_empty():
+            raise Exception("Stack Underflow")
+        return self.stack.pop()
+
+    def peek(self):
+        if self.is_empty():
+            raise Exception("Stack Underflow")
+        return self.stack[-1]
+
+# Example usage
+stack = DynamicArrayStack()
+stack.push(3)
+stack.push(4)
+print(stack.pop())  # 4
+print(stack.peek())  # 3
+```
+
+### 3. **Linked List Stack**
+   - Uses nodes of a linked list for storage.
+   - Each node contains the data and the reference to the next node.
+   - Good for memory efficiency and can grow as needed.
+
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class LinkedListStack:
+    def __init__(self):
+        self.top = None
+
+    def is_empty(self):
+        return self.top is None
+
+    def push(self, data):
+        new_node = Node(data)
+        new_node.next = self.top
+        self.top = new_node
+
+    def pop(self):
+        if self.is_empty():
+            raise Exception("Stack Underflow")
+        data = self.top.data
+        self.top = self.top.next
+        return data
+
+    def peek(self):
+        if self.is_empty():
+            raise Exception("Stack Underflow")
+        return self.top.data
+
+# Example usage
+stack = LinkedListStack()
+stack.push(5)
+stack.push(6)
+print(stack.pop())  # 6
+print(stack.peek())  # 5
+```
+
+### 4. **Thread-Safe Stack**
+   - Designed for use in multi-threaded environments.
+   - Utilizes locks to ensure that only one thread can access the stack at a time.
+
+```python
+from threading import Lock
+
+class ThreadSafeStack:
+    def __init__(self):
+        self.stack = []
+        self.lock = Lock()
+
+    def push(self, item):
+        with self.lock:
+            self.stack.append(item)
+
+    def pop(self):
+        with self.lock:
+            if not self.stack:
+                raise Exception("Stack Underflow")
+            return self.stack.pop()
+
+    def peek(self):
+        with self.lock:
+            if not self.stack:
+                raise Exception("Stack Underflow")
+            return self.stack[-1]
+
+# Example usage
+stack = ThreadSafeStack()
+stack.push(7)
+stack.push(8)
+print(stack.pop())  # 8
+print(stack.peek())  # 7
+```
+
+Each of these stack implementations serves different needs, ranging from simple fixed-size implementations to more complex, thread-safe designs. Depending on your specific requirements, you may choose the appropriate type of stack.
