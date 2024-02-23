@@ -3,10 +3,13 @@ import os
 
 # Mock function to list topics and their paths
 def list_topics(base_path):
-    return {
-        "Python": os.path.join(base_path, "Python"),
-        "Django": os.path.join(base_path, "Django")
-    }
+    topics = {}
+    for name in os.listdir(base_path):
+        path = os.path.join(base_path, name)
+        if os.path.isdir(path):
+            topics[name] = path
+    return topics
+
 def sort_key(name):
     # Attempt to split the name into parts and convert each to int if possible
     parts = name.split('_')[0].split('.')
