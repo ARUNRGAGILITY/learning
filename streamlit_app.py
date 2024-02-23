@@ -1,6 +1,53 @@
 import streamlit as st
 import os
 
+def parse_markdown_content(markdown_content):
+    """
+    Parses the Markdown content to separate code, concepts, and other content.
+    
+    Parameters:
+    - markdown_content: str, the full content of the Markdown file.
+    
+    Returns:
+    - dict, containing separated 'code', 'concepts', and 'all' content.
+    """
+    code_blocks = re.findall(r'```.*?```', markdown_content, re.DOTALL)
+    concept_blocks = re.findall(r'<!--concept-->(.*?)\n', markdown_content, re.DOTALL)
+
+    # Code only: Join all code blocks
+    code_only = '\n'.join(code_blocks)
+    # Concepts only: Join all concept blocks (you might need to adjust this regex based on your actual markers)
+    concepts_only = '\n'.join(concept_blocks)
+    # All content remains unchanged
+    
+    return {'code': code_only, 'concepts': concepts_only, 'all': markdown_content}
+
+def display_filtered_content(selected_file_path):
+    """
+    Displays the content of the selected Markdown file based on user's choice of filtering.
+    
+    Parameters:
+    - selected_file_path: str, path to the selected Markdown file.
+    """
+    if selected_file_path:
+        with open(selected_file_path, "r", encoding="utf-8") as file:
+            content = file.read()
+        
+        parsed_content = parse_markdown_content(content)
+        
+        # Display options for content filtering
+        display_option = st.radio("Display:", ['All Content', 'Code Only', 'Concepts Only'], index=0)
+        
+        # Filter content based on the selected option
+        if display_option == 'Code Only':
+            st.markdown(parsed_content['code'], unsafe_allow_html=True)
+        elif display_option == 'Concepts Only':
+            st.markdown(parsed_content['concepts'], unsafe_allow_html=True)
+        else:  # All Content
+            st.markdown(parsed_content['all'], unsafe_allow_html=True)
+
+
+
 # Mock function to list topics and their paths
 def list_topics(base_path):
     topics = {}
