@@ -1,23 +1,26 @@
 import streamlit as st
 import os
 import re
-
 def display_breadcrumbs(selected_topic, selected_category, selected_module, selected_md_file):
-    # Initialize the breadcrumb with the home link
-    breadcrumbs = "Home"
-    
-    # Dynamically add to the breadcrumb based on what the user has selected
+    # Base URL for your app (modify as needed for external links)
+    base_url = "#"  # Using "#" for internal links; replace with actual URL if needed
+
+    # Initialize the breadcrumb
+    breadcrumbs_html = '<span style="font-size: 0.8rem;">Home</span>'
+
+    # Dynamically build the breadcrumb path
     if selected_topic:
-        breadcrumbs += f" > {selected_topic}"
+        breadcrumbs_html += f' > <a href="{base_url}" style="font-size: 0.8rem;">{selected_topic}</a>'
     if selected_category:
-        breadcrumbs += f" > {selected_category}"
+        breadcrumbs_html += f' > <a href="{base_url}" style="font-size: 0.8rem;">{selected_category}</a>'
     if selected_module:
-        breadcrumbs += f" > {selected_module}"
+        breadcrumbs_html += f' > <a href="{base_url}" style="font-size: 0.8rem;">{selected_module}</a>'
     if selected_md_file:
-        breadcrumbs += f" > {selected_md_file}"
+        breadcrumbs_html += f' > <a href="{base_url}" style="font-size: 0.8rem;">{selected_md_file}</a>'
 
     # Display the breadcrumbs at the top of the main content area
-    st.markdown(f"#### {breadcrumbs}")
+    st.markdown(breadcrumbs_html, unsafe_allow_html=True)
+
 
 
 def parse_markdown_content(markdown_content):
