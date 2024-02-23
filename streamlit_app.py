@@ -25,6 +25,8 @@ def parse_markdown_content(markdown_content):
     
     return {'code': code_only, 'concepts': concepts_only, 'all': markdown_content}
 
+
+
 def display_filtered_content(selected_file_path):
     """
     Displays the content of the selected Markdown file based on user's choice of filtering.
@@ -32,20 +34,36 @@ def display_filtered_content(selected_file_path):
     Parameters:
     - selected_file_path: str, path to the selected Markdown file.
     """
+    
+    
     if selected_file_path:
         with open(selected_file_path, "r", encoding="utf-8") as file:
             content = file.read()
         
         parsed_content = parse_markdown_content(content)
         
-        # Custom CSS to change the radio buttons font size and display them horizontally
-        st.write('<style>div.row-widget.stRadio > div{flex-direction:row;} label{font-size: 0.8rem;}</style>', unsafe_allow_html=True)
+        # Inject custom CSS with st.markdown
+        st.markdown("""
+        <style>
+        /* Targeting the radio buttons directly for horizontal layout */
+        div.stRadio > div[role="radiogroup"] > label {
+        display: inline-block; /* Make radio items inline */
+        margin-right: 10px; /* Spacing between options */
+        }
+        /* Adjusting font size */
+        div.stRadio > div[role="radiogroup"] > label > div:first-child {
+        font-size: 0.8rem; /* Smaller font size */
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        col1, col2 = st.columns([3, 1])  # Adjust as needed
 
-        # Place the radio button on the top right using columns
-        col1, col2 = st.columns([3, 1])  # Adjust the ratio as needed to move the radio to the right
-
-        with col2:  # This column will contain the radio buttons
-            display_option = st.radio("Display:", ['All Content', 'Code Only', 'Concepts Only'], horizontal=True, key="display_option")
+        with col2:
+            display_option = st.radio(
+                "Display:",
+                ['All Content', 'Code Only', 'Concepts Only'],
+                key="display_option"  # Ensure unique key if necessary
+            )    
 
         # Filter content based on the selected option
         if display_option == 'Code Only':
