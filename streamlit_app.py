@@ -48,7 +48,7 @@ def parse_markdown_content(markdown_content):
     concepts_only = '\n\n'.join(concept_blocks)
     # The remaining content is treated as concepts
     # Optionally, further processing can be done here to refine concept extraction
-    concepts_only = no_code_content
+    #concepts_only = no_code_content
     
     return {'code': code_only, 'concepts': concepts_only, 'all': markdown_content}
 
